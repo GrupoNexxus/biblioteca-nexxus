@@ -402,13 +402,21 @@
   .termo-sign div{border-top:1px solid #1a1a1a;padding-top:6px;}
   .termo-obs{border:1px solid #e0dfd8;border-radius:8px;min-height:50px;padding:10px;font-size:11.5px;color:#4a4757;margin-top:10px;}
   .termo-footer{text-align:center;font-size:10.5px;color:#8a879a;margin-top:30px;}
+
   @media print{
   html, body{
     margin:0;
     padding:0;
   }
-  body *{visibility:hidden;}
-  #termoOverlay, #termoOverlay *{visibility:visible;}
+
+  /* Esconde TODO o painel administrativo (menu, tabelas, tudo) de forma
+     completa — display:none remove o espaço ocupado por ele, diferente
+     de visibility:hidden, que só esconde visualmente mas mantém o
+     espaço. É essa troca que evita páginas extras em branco/repetidas. */
+  #root{
+    display:none !important;
+  }
+
   #termoOverlay{
     position:absolute;
     inset:0;

@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { fmtDate, shortCategory } from '../../lib/helpers';
 import nexxusLogo from '../../assets/nexxus-logo.png';
 
@@ -10,7 +11,16 @@ export default function TermoOverlay({ loan, onClose }) {
       ? Math.round((new Date(loan.data_prevista_devolucao) - new Date(loan.data_emprestimo)) / 86400000) + ' dias'
       : '—';
 
-  return (
+  // Usamos um "portal": em vez de renderizar esse conteúdo dentro da
+  // estrutura normal do painel admin (dentro de #root), ele é colocado
+  // direto no <body>, como se fosse um irmão de #root, não um filho.
+  // Isso é essencial pra impressão: na hora de imprimir, a gente esconde
+  // #root inteiro (com display:none, que remove ele completamente do
+  // layout, sem deixar espaço em branco sobrando) e só o termo, que está
+  // fora dele, continua visível — sem isso, o resto do painel (menu,
+  // tabelas etc.) continuava ocupando espaço na página mesmo escondido,
+  // e isso gerava páginas extras em branco/repetidas na impressão.
+  return createPortal(
     <div id="termoOverlay" className="show">
       <div style={{ width: '210mm', maxWidth: '100%', margin: '0 auto' }}>
         <div className="termo-toolbar">
@@ -125,6 +135,7 @@ export default function TermoOverlay({ loan, onClose }) {
           <p className="termo-footer">Biblioteca Nexxus — Grupo F5</p>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
