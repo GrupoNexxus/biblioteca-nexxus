@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { sb } from '../../lib/supabaseClient';
+import { sb, setRememberAdmin } from '../../lib/supabaseClient';
 
 export default function LoginView({ onBackToWho, onForgot, onLoggedIn }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
+  const [remember, setRemember] = useState(true);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -14,6 +15,9 @@ export default function LoginView({ onBackToWho, onForgot, onLoggedIn }) {
       return;
     }
     setBusy(true);
+    // Precisa ser definido ANTES do login: é essa preferência que decide
+    // em qual "cofre" do navegador a sessão vai ser gravada.
+    setRememberAdmin(remember);
     const { error: err } = await sb.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (err) {
@@ -66,7 +70,10 @@ export default function LoginView({ onBackToWho, onForgot, onLoggedIn }) {
         </div>
       </label>
       <div className="link-row">
-        <span></span>
+        <label style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6, fontWeight: 400 }}>
+          <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} style={{ width: 'auto' }} />
+          Lembrar de mim
+        </label>
         <span className="btn-ghost" onClick={onForgot}>
           Esqueci minha senha
         </span>
