@@ -403,12 +403,38 @@
   .termo-obs{border:1px solid #e0dfd8;border-radius:8px;min-height:50px;padding:10px;font-size:11.5px;color:#4a4757;margin-top:10px;}
   .termo-footer{text-align:center;font-size:10.5px;color:#8a879a;margin-top:30px;}
   @media print{
-    body *{visibility:hidden;}
-    #termoOverlay, #termoOverlay *{visibility:visible;}
-    #termoOverlay{position:absolute;inset:0;background:#fff;padding:0;}
-    .termo-toolbar{display:none;}
-    #termoPage{box-shadow:none;margin:0;}
+  html, body{
+    margin:0;
+    padding:0;
   }
+  body *{visibility:hidden;}
+  #termoOverlay, #termoOverlay *{visibility:visible;}
+  #termoOverlay{
+    position:absolute;
+    inset:0;
+    background:#fff;
+    padding:0;
+    overflow:visible;
+  }
+  .termo-toolbar{display:none;}
+  #termoPage{
+    box-shadow:none;
+    margin:0;
+    width:210mm;
+    min-height:297mm;
+    page-break-after:avoid;
+  }
+  .termo-section,
+  .termo-grid,
+  .termo-sign{
+    page-break-inside:avoid;
+  }
+}
+
+  @page {
+  size: A4;
+  margin: 0;
+}
 
   @media (max-width:900px){
     .admin-sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .2s ease;z-index:45;}
@@ -419,9 +445,11 @@
 /* Logo do Grupo Nexxus no Termo de Empréstimo */
 .termo-logo{
   display:block;
-  height:44px;
+  height:40px;
   width:auto;
-  margin:0 auto 14px;
+  max-width:150px;
+  object-fit:contain;
+  margin:0 0 14px;
 }
 
 /* Logo do Grupo Nexxus na tela inicial (login) */
