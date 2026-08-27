@@ -17,6 +17,20 @@ export default function CatalogScreen({ me, onSwitchIdentity, onOpenAdmin }) {
     loadCatalog();
   }, []);
 
+  // ---- Realtime: quando um livro é emprestado, devolvido, cadastrado
+  // etc. por qualquer pessoa, o acervo aqui recarrega sozinho.
+  useEffect(() => {
+    const channel = sb
+      .channel('catalog-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'books' }, () => loadCatalog())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, () => loadCatalog())
+      .subscribe();
+
+    return () => {
+      sb.removeChannel(channel);
+    };
+  }, []);
+
   async function loadCatalog() {
     const [{ data: bks, error: booksErr }, { data: cats, error: catErr }] = await Promise.all([
       sb

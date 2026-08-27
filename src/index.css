@@ -423,3 +423,11 @@
   width:auto;
   margin:0 auto 14px;
 }
+
+/* Logo do Grupo Nexxus na tela inicial (login) */
+.auth-logo{
+  display:block;
+  height:32px;
+  width:auto;
+  margin:0 0 24px;
+}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { sb } from '../../lib/supabaseClient';
 
-export default function LoginView({ onBackToWho, onForgot, onGoSignup, onLoggedIn }) {
+export default function LoginView({ onBackToWho, onForgot, onLoggedIn }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
@@ -74,12 +74,6 @@ export default function LoginView({ onBackToWho, onForgot, onGoSignup, onLoggedI
       <button className="btn btn-primary" disabled={busy} onClick={handleLogin}>
         {busy ? 'Entrando...' : 'Entrar'}
       </button>
-      <p className="sub" style={{ textAlign: 'center', marginTop: -4 }}>
-        Ainda não tem conta?{' '}
-        <span className="btn-ghost" style={{ display: 'inline', fontSize: 13 }} onClick={onGoSignup}>
-          Criar conta
-        </span>
-      </p>
     </div>
   );
 }

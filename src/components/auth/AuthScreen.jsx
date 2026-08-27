@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { sb } from '../../lib/supabaseClient';
+import nexxusLogo from '../../assets/nexxus-logo.png';
 import WhoView from './WhoView';
 import WelcomeView from './WelcomeView';
 import LoginView from './LoginView';
-import SignupView from './SignupView';
 import ForgotView from './ForgotView';
 import ResetView from './ResetView';
 
 export default function AuthScreen({ onEnterAsEmployee, onEnterAsAdmin }) {
-  const [view, setView] = useState('who'); // who | welcome | login | signup | forgot | reset
-  const [showTabs, setShowTabs] = useState(false);
+  const [view, setView] = useState('who'); // who | welcome | login | forgot | reset
   const [pendingEmployee, setPendingEmployee] = useState(null);
 
   useEffect(() => {
@@ -18,11 +17,6 @@ export default function AuthScreen({ onEnterAsEmployee, onEnterAsAdmin }) {
     });
     return () => sub.subscription.unsubscribe();
   }, []);
-
-  function goAdminTab(target) {
-    setShowTabs(true);
-    setView(target);
-  }
 
   return (
     <div id="authScreen">
@@ -48,16 +42,7 @@ export default function AuthScreen({ onEnterAsEmployee, onEnterAsAdmin }) {
         </div>
 
         <div className="panel">
-          {showTabs && (
-            <div className="tabs">
-              <button className={`tab ${view === 'login' ? 'active' : ''}`} onClick={() => setView('login')}>
-                Entrar
-              </button>
-              <button className={`tab ${view === 'signup' ? 'active' : ''}`} onClick={() => setView('signup')}>
-                Criar conta
-              </button>
-            </div>
-          )}
+          <img src={nexxusLogo} alt="Grupo Nexxus" className="auth-logo" />
 
           {view === 'who' && (
             <WhoView
@@ -65,7 +50,7 @@ export default function AuthScreen({ onEnterAsEmployee, onEnterAsAdmin }) {
                 setPendingEmployee(emp);
                 setView('welcome');
               }}
-              onAdminToggle={() => goAdminTab('login')}
+              onAdminToggle={() => setView('login')}
             />
           )}
 
@@ -82,17 +67,11 @@ export default function AuthScreen({ onEnterAsEmployee, onEnterAsAdmin }) {
 
           {view === 'login' && (
             <LoginView
-              onBackToWho={() => {
-                setShowTabs(false);
-                setView('who');
-              }}
+              onBackToWho={() => setView('who')}
               onForgot={() => setView('forgot')}
-              onGoSignup={() => setView('signup')}
               onLoggedIn={onEnterAsAdmin}
             />
           )}
-
-          {view === 'signup' && <SignupView />}
 
           {view === 'forgot' && <ForgotView onBack={() => setView('login')} />}
 

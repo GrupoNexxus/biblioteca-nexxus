@@ -54,6 +54,23 @@ export default function AdminPanel({ me, onClose }) {
     reloadAdminData();
   }, [reloadAdminData]);
 
+  // ---- Realtime: qualquer mudança em books/loans/employees/categories
+  // feita por qualquer pessoa (nesta aba, em outro navegador, no celular
+  // de outra pessoa) recarrega os dados do painel automaticamente.
+  useEffect(() => {
+    const channel = sb
+      .channel('admin-panel-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'books' }, () => reloadAdminData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'loans' }, () => reloadAdminData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'employees' }, () => reloadAdminData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, () => reloadAdminData())
+      .subscribe();
+
+    return () => {
+      sb.removeChannel(channel);
+    };
+  }, [reloadAdminData]);
+
   const shared = { employees, books, categories, loans, reloadAdminData, me };
 
   const pages = {
