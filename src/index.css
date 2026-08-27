@@ -432,4 +432,5 @@
   max-width:160px;
   object-fit:contain;
   margin:0 0 24px;
+  align-self:center;
 }
