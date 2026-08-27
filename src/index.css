@@ -425,9 +425,11 @@
 }
 
 /* Logo do Grupo Nexxus na tela inicial (login) */
-.auth-logo{
+.panel .auth-logo{
   display:block;
-  height:42px;
+  height:32px;
   width:auto;
+  max-width:160px;
+  object-fit:contain;
   margin:0 0 24px;
 }
